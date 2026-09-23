@@ -1,0 +1,19 @@
+{
+  "name": "estateflow-crm-monorepo",
+  "version": "1.0.0",
+  "description": "Real Estate CRM - Full-stack MERN Application",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -n \"BACKEND,FRONTEND\" -c \"cyan.bold,green.bold\" \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "start": "npm start --prefix backend",
+    "build": "npm run build --prefix frontend",
+    "test": "npm test --prefix backend",
+    "test:serve": "node backend/test/test_frontend_serve.js",
+    "install:all": "npm install && npm install --prefix backend && npm install --prefix frontend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

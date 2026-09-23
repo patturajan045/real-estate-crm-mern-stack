@@ -2,7 +2,8 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 
 const api = axios.create({
-  baseURL: '',
+  // Use the Vite environment variable, falling back to localhost for local development
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',

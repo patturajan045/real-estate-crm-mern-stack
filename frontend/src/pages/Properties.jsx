@@ -16,6 +16,7 @@ import UnitCardGrid from '../components/properties/UnitCardGrid';
 import UnitModal from '../components/properties/UnitModal';
 import ProjectModal from '../components/properties/ProjectModal';
 import BuildingModal from '../components/properties/BuildingModal';
+import { exportToCsv } from '../utils/exportUtils';
 
 export default function Properties() {
   const { hasRole } = useAuth();
@@ -384,6 +385,38 @@ export default function Properties() {
     else if (action === 'delete') handleDeleteUnit(unit);
   };
 
+  // Export Units to Excel / CSV
+  const handleExportUnits = () => {
+    const list = filteredUnits.length > 0 ? filteredUnits : units;
+    if (list.length === 0) {
+      toast('No units available to export', 'info');
+      return;
+    }
+    const headers = [
+      'Unit Number',
+      'Master Project',
+      'Building / Tower',
+      'Unit Type',
+      'Floor',
+      'Carpet Area (Sq.Ft)',
+      'Price (INR)',
+      'Status',
+    ];
+    const rows = list.map((u) => [
+      u.unitNumber || '',
+      u.project?.name || '',
+      u.building?.name || '',
+      u.unitType || '',
+      u.floor ?? '',
+      u.carpetAreaSqFt || '',
+      u.price || 0,
+      u.status || 'Available',
+    ]);
+    const dateStr = new Date().toISOString().slice(0, 10);
+    exportToCsv(`Units_Inventory_${dateStr}.csv`, headers, rows);
+    toast(`Exported ${list.length} property units to Excel successfully!`, 'success');
+  };
+
   if (loading) {
     return <LoadingSpinner fullPage message="Loading properties and inventory..." />;
   }
@@ -404,6 +437,8 @@ export default function Properties() {
         }}
         onRefresh={() => fetchData(true)}
         refreshing={refreshing}
+        onExport={activeTab === 'units' ? handleExportUnits : undefined}
+        exportLabel="Export Excel"
       />
 
       {/* Responsive Segmented Tab Pill Navigation Bar */}
@@ -617,17 +652,17 @@ export default function Properties() {
                       )}
                     </div>
 
-                    <div className="d-flex align-items-center gap-1.5 pt-3 border-top mt-auto">
+                    <div className="d-flex align-items-center gap-2 pt-3 border-top mt-auto">
                       <button
                         type="button"
-                        className="btn btn-sm btn-outline-secondary flex-grow-1"
+                        className="btn btn-sm btn-outline-secondary flex-grow-1 py-1.5 px-3 d-inline-flex align-items-center justify-content-center"
                         onClick={() => handleOpenEditProject(proj)}
                       >
-                        <i className="fas fa-pen-to-square me-1"></i> Edit
+                        <i className="fas fa-pen-to-square me-1.5"></i> Edit
                       </button>
                       <button
                         type="button"
-                        className="btn btn-sm btn-outline-danger"
+                        className="btn btn-sm btn-outline-danger py-1.5 px-2.5 d-inline-flex align-items-center justify-content-center"
                         onClick={() => handleDeleteProject(proj)}
                         title="Delete Project"
                       >
@@ -684,17 +719,17 @@ export default function Properties() {
                       )}
                     </div>
 
-                    <div className="d-flex align-items-center gap-1.5 pt-3 border-top mt-auto">
+                    <div className="d-flex align-items-center gap-2 pt-3 border-top mt-auto">
                       <button
                         type="button"
-                        className="btn btn-sm btn-outline-secondary flex-grow-1"
+                        className="btn btn-sm btn-outline-secondary flex-grow-1 py-1.5 px-3 d-inline-flex align-items-center justify-content-center"
                         onClick={() => handleOpenEditBuilding(bld)}
                       >
-                        <i className="fas fa-pen-to-square me-1"></i> Edit
+                        <i className="fas fa-pen-to-square me-1.5"></i> Edit
                       </button>
                       <button
                         type="button"
-                        className="btn btn-sm btn-outline-danger"
+                        className="btn btn-sm btn-outline-danger py-1.5 px-2.5 d-inline-flex align-items-center justify-content-center"
                         onClick={() => handleDeleteBuilding(bld)}
                         title="Delete Building"
                       >

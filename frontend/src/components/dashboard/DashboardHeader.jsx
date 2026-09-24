@@ -1,5 +1,4 @@
 import React from 'react';
-import { useAuth } from '../../context/AuthContext';
 import { useCms } from '../../context/CmsContext';
 
 export default function DashboardHeader({
@@ -9,26 +8,13 @@ export default function DashboardHeader({
   refreshing = false,
   onExportReport,
 }) {
-  const { user } = useAuth();
   const { t } = useCms();
-
-  const getGreeting = () => {
-    const hour = new Date().getHours();
-    if (hour < 12) return 'Good morning';
-    if (hour < 17) return 'Good afternoon';
-    return 'Good evening';
-  };
 
   return (
     <div className="crm-page-header-centered mb-3 mb-sm-4">
       {/* Floating Modern Icon Badge */}
       <div className="page-icon-badge dashboard-badge">
         <i className="fas fa-chart-line"></i>
-      </div>
-
-      {/* Dynamic User Greeting & Headings */}
-      <div className="small fw-semibold text-primary text-uppercase tracking-wider mb-1" style={{ fontSize: '0.74rem' }}>
-        {getGreeting()}{user?.name ? `, ${user.name}` : ''}
       </div>
       
       <h1 className="page-title-creative mb-1.5">
@@ -46,11 +32,11 @@ export default function DashboardHeader({
       {/* Decorative Divider */}
       <div className="page-header-divider my-2.5"></div>
 
-      {/* Header Quick Action Pill Buttons (Responsive with shortened words on mobile) */}
-      <div className="d-flex justify-content-center flex-wrap gap-1.5 gap-sm-2 mt-2">
+      {/* Header Quick Action Pill Buttons (Responsive with tight gap and compact buttons on mobile) */}
+      <div className="dashboard-header-actions d-flex justify-content-center flex-wrap gap-1.5 gap-sm-2 mt-2">
         <button
           type="button"
-          className="btn btn-primary btn-sm d-inline-flex align-items-center gap-1.5 shadow-sm px-2.5 px-sm-3"
+          className="btn btn-primary btn-sm d-inline-flex align-items-center gap-1 shadow-sm px-2 px-sm-3"
           onClick={onOpenQuickLead}
           title="Add a prospective customer"
         >
@@ -61,7 +47,7 @@ export default function DashboardHeader({
 
         <button
           type="button"
-          className="btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-1.5 px-2.5 px-sm-3"
+          className="btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-1 px-2 px-sm-3"
           onClick={onNavigateNewBooking}
           title="Create a new property reservation agreement"
         >
@@ -73,24 +59,26 @@ export default function DashboardHeader({
         {onExportReport && (
           <button
             type="button"
-            className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-1.5 px-2.5 px-sm-3 d-none d-md-inline-flex"
+            className="btn btn-outline-success btn-sm d-inline-flex align-items-center gap-1 px-2 px-sm-3"
             onClick={onExportReport}
             title="Download CSV report of CRM metrics"
           >
-            <i className="fas fa-file-export small"></i>
-            <span className="fw-medium">Export</span>
+            <i className="fas fa-file-excel small"></i>
+            <span className="fw-medium d-none d-sm-inline">Export Report</span>
+            <span className="fw-medium d-sm-none">Export</span>
           </button>
         )}
 
         <button
           type="button"
-          className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-1.5 px-2.5 px-sm-3"
+          className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-1 px-2 px-sm-3"
           onClick={onRefresh}
           disabled={refreshing}
           title="Refresh dashboard metrics from database"
         >
           <i className={`fas fa-sync-alt small ${refreshing ? 'fa-spin' : ''}`}></i>
           <span className="fw-medium d-none d-sm-inline">{refreshing ? 'Refreshing...' : 'Refresh'}</span>
+          <span className="fw-medium d-sm-none">Sync</span>
         </button>
       </div>
     </div>

@@ -78,35 +78,59 @@ export default function UnitCardGrid({
                   </div>
                 </div>
 
-                {/* Card Actions */}
-                <div className="d-flex align-items-center gap-1.5 mt-auto pt-2 border-top">
-                  {isAvailable && (
-                    <button
-                      type="button"
-                      className="btn btn-sm btn-primary flex-grow-1 d-inline-flex align-items-center justify-content-center gap-1"
-                      onClick={() => onBookUnit(unit)}
-                      title="Reserve / Book this Unit"
-                    >
-                      <i className="fas fa-file-signature"></i>
-                      <span>Book</span>
-                    </button>
+                {/* Card Actions (Responsive with clear spacing between each button) */}
+                <div className="d-flex align-items-center justify-content-between gap-2 mt-auto pt-2.5 border-top flex-wrap">
+                  {isAvailable ? (
+                    <>
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-primary flex-grow-1 d-inline-flex align-items-center justify-content-center gap-1.5 py-1.5 px-2.5 shadow-sm"
+                        onClick={() => onBookUnit(unit)}
+                        title="Reserve / Book this Unit"
+                      >
+                        <i className="fas fa-file-signature small"></i>
+                        <span className="fw-semibold">Book</span>
+                      </button>
+                      <div className="d-flex align-items-center gap-2">
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-outline-secondary d-inline-flex align-items-center justify-content-center py-1.5 px-2.5"
+                          onClick={() => onEditUnit(unit)}
+                          title="Edit Unit Details"
+                        >
+                          <i className="fas fa-pen-to-square"></i>
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-outline-danger d-inline-flex align-items-center justify-content-center py-1.5 px-2.5"
+                          onClick={() => onDeleteUnit(unit)}
+                          title="Delete Unit"
+                        >
+                          <i className="fas fa-trash-can"></i>
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="d-flex align-items-center justify-content-end gap-2 w-100">
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-outline-secondary flex-grow-1 d-inline-flex align-items-center justify-content-center gap-1.5 py-1.5 px-3"
+                        onClick={() => onEditUnit(unit)}
+                        title="Edit Unit Details"
+                      >
+                        <i className="fas fa-pen-to-square"></i>
+                        <span>Edit Unit</span>
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-outline-danger d-inline-flex align-items-center justify-content-center py-1.5 px-3"
+                        onClick={() => onDeleteUnit(unit)}
+                        title="Delete Unit"
+                      >
+                        <i className="fas fa-trash-can"></i>
+                      </button>
+                    </div>
                   )}
-                  <button
-                    type="button"
-                    className="btn btn-sm btn-outline-secondary"
-                    onClick={() => onEditUnit(unit)}
-                    title="Edit Unit Details"
-                  >
-                    <i className="fas fa-pen-to-square"></i>
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-sm btn-outline-danger"
-                    onClick={() => onDeleteUnit(unit)}
-                    title="Delete Unit"
-                  >
-                    <i className="fas fa-trash-can"></i>
-                  </button>
                 </div>
               </div>
             </div>

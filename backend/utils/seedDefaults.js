@@ -4,15 +4,15 @@ const { hashPassword } = require('./passwordUtils');
 
 const DEFAULT_PAGE_CONTENTS = [
   // Login Page
-  { page: 'login', sectionKey: 'login_brand_title', label: 'Login Brand Title', content: 'EstateFlow CRM', contentType: 'title', sortOrder: 1 },
+  { page: 'login', sectionKey: 'login_brand_title', label: 'Login Brand Title', content: 'Real Estate Flow CRM', contentType: 'title', sortOrder: 1 },
   { page: 'login', sectionKey: 'login_brand_subtitle', label: 'Login Brand Subtitle', content: 'Real Estate Sales & Booking Platform', contentType: 'subtitle', sortOrder: 2 },
   { page: 'login', sectionKey: 'login_heading', label: 'Login Card Heading', content: 'Sign In to Your Account', contentType: 'heading', sortOrder: 3 },
   { page: 'login', sectionKey: 'login_subheading', label: 'Login Instruction Subheading', content: 'Enter your verified credentials to access your real estate workspace', contentType: 'paragraph', sortOrder: 4 },
   { page: 'login', sectionKey: 'login_label_identifier', label: 'Login Field Label', content: 'Email or Username', contentType: 'heading', sortOrder: 5 },
-  { page: 'login', sectionKey: 'login_footer_text', label: 'Login Footer Copyright / Note', content: '© 2026 EstateFlow CRM. Protected by JWT Authentication.', contentType: 'paragraph', sortOrder: 6 },
+  { page: 'login', sectionKey: 'login_footer_text', label: 'Login Footer Copyright / Note', content: '© 2026 Real Estate Flow CRM. Protected by JWT Authentication.', contentType: 'paragraph', sortOrder: 6 },
 
   // Register Page
-  { page: 'register', sectionKey: 'register_brand_title', label: 'Register Brand Title', content: 'EstateFlow CRM', contentType: 'title', sortOrder: 1 },
+  { page: 'register', sectionKey: 'register_brand_title', label: 'Register Brand Title', content: 'Real Estate Flow CRM', contentType: 'title', sortOrder: 1 },
   { page: 'register', sectionKey: 'register_brand_subtitle', label: 'Register Brand Subtitle', content: 'Real Estate Sales & Booking Platform', contentType: 'subtitle', sortOrder: 2 },
   { page: 'register', sectionKey: 'register_heading', label: 'Register Card Heading', content: 'Create Team Account', contentType: 'heading', sortOrder: 3 },
   { page: 'register', sectionKey: 'register_subheading', label: 'Register Instruction Subheading', content: 'Join the sales and property management team', contentType: 'paragraph', sortOrder: 4 },
@@ -55,7 +55,7 @@ const DEFAULT_PAGE_CONTENTS = [
   { page: 'settings', sectionKey: 'settings_info_banner', label: 'Settings Instructions Banner', content: 'All changes saved here update system records instantly and apply across the entire portal for all users without code changes.', contentType: 'paragraph', sortOrder: 3 },
 
   // Global Navigation & Sidebar
-  { page: 'navigation', sectionKey: 'nav_brand_name', label: 'Sidebar Brand Name', content: 'EstateFlow', contentType: 'title', sortOrder: 1 },
+  { page: 'navigation', sectionKey: 'nav_brand_name', label: 'Sidebar Brand Name', content: 'Real Estate Flow', contentType: 'title', sortOrder: 1 },
   { page: 'navigation', sectionKey: 'nav_brand_subtitle', label: 'Sidebar Brand Subtitle', content: 'Real Estate CRM', contentType: 'subtitle', sortOrder: 2 },
   { page: 'navigation', sectionKey: 'nav_menu_overview', label: 'Menu Header: Overview', content: 'Overview', contentType: 'heading', sortOrder: 3 },
   { page: 'navigation', sectionKey: 'nav_menu_dashboard', label: 'Menu Item: Dashboard', content: 'Dashboard', contentType: 'title', sortOrder: 4 },

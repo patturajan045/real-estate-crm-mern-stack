@@ -9,6 +9,9 @@ import React from 'react';
  * @param {Function} onPrimaryAction - Click callback for primary action
  * @param {Function} onRefresh - Optional refresh button callback
  * @param {boolean} refreshing - Spinner on refresh button
+ * @param {Function} onExport - Optional callback to export data to Excel / CSV
+ * @param {string} exportLabel - Custom label for export button
+ * @param {string} exportTitle - Tooltip title for export button
  * @param {React.ReactNode} children - Additional filter chips or action slots
  */
 export default function PageHeader({
@@ -19,6 +22,9 @@ export default function PageHeader({
   onPrimaryAction,
   onRefresh,
   refreshing = false,
+  onExport,
+  exportLabel,
+  exportTitle,
   children,
 }) {
   return (
@@ -48,6 +54,20 @@ export default function PageHeader({
           >
             <i className={`fas fa-rotate ${refreshing ? 'fa-spin' : ''}`}></i>
             <span className="d-none d-sm-inline">Refresh</span>
+          </button>
+        )}
+
+        {onExport && (
+          <button
+            type="button"
+            className="btn btn-outline-success btn-sm d-inline-flex align-items-center gap-1.5"
+            onClick={onExport}
+            title={exportTitle || 'Export data to Excel / CSV'}
+            aria-label="Export Excel Report"
+          >
+            <i className="fas fa-file-excel text-success"></i>
+            <span className="d-none d-sm-inline">{exportLabel || 'Export Excel'}</span>
+            <span className="d-sm-none">Export</span>
           </button>
         )}
 

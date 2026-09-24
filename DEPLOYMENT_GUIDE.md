@@ -1,6 +1,6 @@
-# EstateFlow CRM - Production Live Deployment Guide
+# Real Estate Flow CRM - Production Live Deployment Guide
 
-This guide provides end-to-end instructions for deploying the **EstateFlow Real Estate CRM** to production:
+This guide provides end-to-end instructions for deploying the **Real Estate Flow CRM** to production:
 - **Database**: MongoDB Atlas (Cloud Database)
 - **Backend API**: Render (Node.js/Express Web Service)
 - **Frontend App**: Vercel (Vite + React Single-Page Application)

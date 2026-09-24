@@ -39,8 +39,8 @@ export default function Sidebar({ isCollapsed, onToggleCollapse }) {
             className="sidebar-brand-logo-wrapper position-relative text-decoration-none"
             id="sidebarBrandLogoLink"
             onClick={handleBrandClick}
-            title={isCollapsed ? 'Click brand icon to expand sidebar' : 'EstateFlow CRM Overview'}
-            aria-label="EstateFlow CRM Overview"
+            title={isCollapsed ? 'Click brand icon to expand sidebar' : 'Real Estate Flow CRM Overview'}
+            aria-label="Real Estate Flow CRM Overview"
           >
             <div className="sidebar-brand-icon d-inline-flex align-items-center justify-content-center">
               <i className="fas fa-city"></i>
@@ -53,7 +53,7 @@ export default function Sidebar({ isCollapsed, onToggleCollapse }) {
           <div className="brand-text-block min-w-0">
             <div className="d-flex align-items-center gap-1.5 line-height-1">
               <span className="brand-title fw-bold text-truncate" id="sidebarBrandTitle">
-                {t('nav_brand_name', 'Real Estate CRM')}
+                {t('nav_brand_name', 'Real Estate Flow')}
               </span>
             </div>
             <div className="brand-subtitle text-truncate">

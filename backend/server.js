@@ -93,7 +93,7 @@ const authLimiter = rateLimit({
 app.get('/api/health', (req, res) => {
   return res.status(200).json({
     status: 'success',
-    service: 'EstateFlow Real Estate CRM API',
+    service: 'Real Estate Flow CRM API',
     uptime: Math.floor(process.uptime()),
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || 'development'
@@ -127,7 +127,7 @@ app.get('/', (req, res) => {
   }
   return res.status(200).json({
     status: 'success',
-    service: 'EstateFlow Real Estate CRM API',
+    service: 'Real Estate Flow CRM API',
     environment: process.env.NODE_ENV || 'development',
     version: '1.0.0',
     message: 'Backend API service is running on Render.',

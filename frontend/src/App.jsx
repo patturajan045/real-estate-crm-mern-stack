@@ -25,7 +25,7 @@ export default function App() {
         <CmsProvider>
           <NotificationProvider>
             <BrowserRouter>
-              <Suspense fallback={<LoadingSpinner fullPage message="Loading EstateFlow CRM..." />}>
+              <Suspense fallback={<LoadingSpinner fullPage message="Loading Real Estate Flow CRM..." />}>
                 <Routes>
                   {/* Public Auth Routes */}
                   <Route path="/login" element={<Login />} />

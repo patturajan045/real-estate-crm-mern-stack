@@ -161,7 +161,7 @@ export default function PortfolioOccupancySection({ unitsByStatus = {}, totalUni
         </div>
 
         {/* 4 Detailed Interactive Status Metric Tiles */}
-        <div className="row g-2.5 g-sm-3 pt-1 text-start">
+        <div className="row g-2 g-sm-3 occupancy-metrics-row pt-1 text-start">
           {/* 1. Available */}
           <div className="col-6 col-md-3">
             <div

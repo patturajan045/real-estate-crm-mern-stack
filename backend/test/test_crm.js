@@ -1,5 +1,5 @@
 /**
- * test_crm.js - Production Test Suite for EstateFlow Real Estate CRM (Node.js/Express)
+ * test_crm.js - Production Test Suite for Real Estate Flow CRM (Node.js/Express)
  * Replicates 100% of test_crm.py:
  * 1. System Health Check & Database Connectivity
  * 2. Authentication via Email AND Username (Case-Insensitive)
@@ -60,7 +60,7 @@ async function request(path, options = {}) {
 
 async function runAllTests() {
   console.log('==================================================');
-  console.log('RUNNING ESTATEFLOW CRM PRODUCTION TEST SUITE (NODE.JS)');
+  console.log('RUNNING REAL ESTATE FLOW CRM PRODUCTION TEST SUITE (NODE.JS)');
   console.log('==================================================');
 
   await connectDB();

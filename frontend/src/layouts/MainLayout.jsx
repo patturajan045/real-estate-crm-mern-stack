@@ -17,7 +17,7 @@ export default function MainLayout() {
   const [isMobileProfileOpen, setIsMobileProfileOpen] = useState(false);
   const [isMobileNavMenuOpen, setIsMobileNavMenuOpen] = useState(false);
   const [isMobileQuickActionOpen, setIsMobileQuickActionOpen] = useState(false);
-  const [isGlobalSearchOpen, setIsGlobalSearchOpen] = useState(false);
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
 
   const location = useLocation();
 
@@ -34,7 +34,7 @@ export default function MainLayout() {
     const handleKeyDown = (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
         e.preventDefault();
-        setIsGlobalSearchOpen((prev) => !prev);
+        setIsSearchModalOpen((prev) => !prev);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -57,7 +57,7 @@ export default function MainLayout() {
     setIsMobileProfileOpen(false);
     setIsMobileNavMenuOpen(false);
     setIsMobileQuickActionOpen(false);
-    setIsGlobalSearchOpen(false);
+    setIsSearchModalOpen(false);
   }, [location.pathname]);
 
   return (
@@ -69,7 +69,7 @@ export default function MainLayout() {
           navContext={getNavContext()}
           onOpenProfileDrawer={() => setIsProfileDrawerOpen(true)}
           onOpenMobileProfile={() => setIsMobileProfileOpen(true)}
-          onOpenGlobalSearch={() => setIsGlobalSearchOpen(true)}
+          onOpenSearch={() => setIsSearchModalOpen(true)}
         />
 
         <main className="crm-content">
@@ -103,8 +103,8 @@ export default function MainLayout() {
       />
 
       <GlobalSearchModal
-        isOpen={isGlobalSearchOpen}
-        onClose={() => setIsGlobalSearchOpen(false)}
+        isOpen={isSearchModalOpen}
+        onClose={() => setIsSearchModalOpen(false)}
       />
     </div>
   );

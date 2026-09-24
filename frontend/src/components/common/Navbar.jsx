@@ -8,7 +8,7 @@ export default function Navbar({
   navContext = 'Overview',
   onOpenProfileDrawer,
   onOpenMobileProfile,
-  onOpenGlobalSearch,
+  onOpenSearch,
 }) {
   const { user } = useAuth();
   const { isDark, toggleTheme } = useTheme();
@@ -19,7 +19,7 @@ export default function Navbar({
       {/* 1. DEDICATED MOBILE TOP NAVBAR (< 768px)                */}
       {/* ======================================================== */}
       <header className="crm-mobile-header d-flex d-md-none align-items-center justify-content-between px-3 py-2 border-bottom shadow-sm">
-        {/* Brand with City Icon */}
+        {/* Brand with City Icon (Clean title without green dot) */}
         <div className="d-flex align-items-center gap-2 min-w-0">
           <div
             className="rounded-3 d-inline-flex align-items-center justify-content-center text-white flex-shrink-0"
@@ -33,33 +33,30 @@ export default function Navbar({
             <i className="fas fa-city" style={{ fontSize: '0.9rem' }}></i>
           </div>
           <div className="min-w-0">
-            <span className="fw-bold d-block text-truncate text-body" style={{ fontSize: '0.92rem', letterSpacing: '-0.02em' }}>
-              EstateFlow
-            </span>
-            <span className="badge bg-success-subtle text-success p-0" style={{ fontSize: '0.62rem' }}>
-              <i className="fas fa-circle me-1" style={{ fontSize: '5px' }}></i>Live
+            <span className="fw-bold text-truncate text-body" style={{ fontSize: '0.95rem', letterSpacing: '-0.02em' }}>
+              Real Estate Flow
             </span>
           </div>
         </div>
 
-        {/* Action Triggers: Search + Theme + Notifications + User Avatar */}
-        <div className="d-flex align-items-center gap-1.5 flex-shrink-0">
-          {/* Quick Search Trigger */}
+        {/* Action Triggers: Search + Theme (Hidden < 500px) + Notifications + User Avatar (With comfortable gap between buttons) */}
+        <div className="d-flex align-items-center gap-2 gap-sm-2.5 flex-shrink-0">
+          {/* Quick Search Action Trigger (Responsive with NO placeholder) */}
           <button
             type="button"
             className="btn btn-sm btn-outline-secondary d-flex align-items-center justify-content-center p-0 rounded-2"
-            onClick={onOpenGlobalSearch}
-            title="Search anything (Cmd+K)"
-            aria-label="Global Search"
+            onClick={onOpenSearch}
+            title="Search CRM"
+            aria-label="Search CRM"
             style={{ width: '34px', height: '34px' }}
           >
             <i className="fas fa-search small"></i>
           </button>
 
-          {/* Theme Switcher Toggle */}
+          {/* Theme Switcher Toggle (Hidden under 500px via crm-theme-toggle-mobile) */}
           <button
             type="button"
-            className="btn btn-sm btn-outline-secondary d-flex align-items-center justify-content-center p-0 rounded-2"
+            className="btn btn-sm btn-outline-secondary d-flex align-items-center justify-content-center p-0 rounded-2 crm-theme-toggle-mobile"
             onClick={toggleTheme}
             title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
             aria-label="Toggle Theme"
@@ -98,7 +95,7 @@ export default function Navbar({
       {/* 2. ADVANCED DESKTOP HEADER BAR (>= 768px)               */}
       {/* ======================================================== */}
       <header className="crm-header d-none d-md-flex align-items-center justify-content-between px-3 px-lg-4 border-bottom">
-        {/* Left: Sidebar Toggle + Nav Context Pill */}
+        {/* Left: Sidebar Toggle + Clean Typography Header */}
         <div className="d-flex align-items-center gap-2 gap-sm-3 min-w-0">
           <button
             className="btn btn-sm btn-sidebar-toggle d-lg-none flex-shrink-0"
@@ -114,39 +111,29 @@ export default function Navbar({
           </button>
 
           <div className="header-title-box min-w-0">
-            <span
-              className="badge bg-primary-subtle text-primary border border-primary-subtle px-2.5 py-1.5 d-inline-flex align-items-center gap-1.5 fw-semibold"
-              style={{ fontSize: '0.8rem', borderRadius: '0.5rem' }}
-            >
-              <span
-                className="rounded-circle bg-success"
-                style={{ width: '6px', height: '6px', display: 'inline-block' }}
-              ></span>
-              <span className="text-truncate">{navContext}</span>
-            </span>
+            <h6 className="fw-bold mb-0 text-body text-truncate" style={{ fontSize: '0.96rem', letterSpacing: '-0.01em' }}>
+              {navContext}
+            </h6>
           </div>
         </div>
 
-        {/* Center: Command Palette / Global Search Trigger */}
-        <div className="d-none d-md-block flex-grow-1 mx-3" style={{ maxWidth: '420px' }}>
+        {/* Center: Search Trigger (Responsive with NO placeholder attribute) */}
+        <div className="d-none d-md-flex align-items-center justify-content-center flex-grow-1 mx-3" style={{ maxWidth: '380px' }}>
           <button
             type="button"
-            className="btn btn-sm btn-outline-secondary w-100 d-flex align-items-center justify-content-between px-3 py-1.5 rounded-3 text-muted text-start"
-            onClick={onOpenGlobalSearch}
+            className="btn btn-sm btn-outline-secondary w-100 d-flex align-items-center gap-2 px-3 py-1.5 rounded-pill text-start"
+            onClick={onOpenSearch}
+            title="Search CRM"
+            aria-label="Search CRM"
             style={{
-              backgroundColor: 'var(--crm-input-bg)',
+              backgroundColor: 'var(--crm-card-bg)',
               borderColor: 'var(--crm-border)',
-              fontSize: '0.82rem',
+              fontSize: '0.84rem',
               boxShadow: 'none',
             }}
           >
-            <span className="d-flex align-items-center gap-2">
-              <i className="fas fa-search text-primary small"></i>
-              <span className="text-truncate">Search leads, units, bookings, pages...</span>
-            </span>
-            <kbd className="badge bg-body text-muted border py-0.5 px-1.5 small font-monospace">
-              ⌘K
-            </kbd>
+            <i className="fas fa-search text-primary small"></i>
+            <span className="fw-medium text-body">Search</span>
           </button>
         </div>
 

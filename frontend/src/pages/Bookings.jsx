@@ -19,6 +19,7 @@ import JqueryDataTable from '../components/common/JqueryDataTable';
 import RecordActionModal from '../components/common/RecordActionModal';
 import BookingModal from '../components/bookings/BookingModal';
 import BookingReceiptModal from '../components/bookings/BookingReceiptModal';
+import { exportToCsv } from '../utils/exportUtils';
 
 export default function Bookings() {
   const { user } = useAuth();
@@ -205,6 +206,42 @@ export default function Bookings() {
     return bookings.filter((b) => b.status === statusFilter);
   }, [bookings, statusFilter]);
 
+  // Export Bookings to Excel / CSV
+  const handleExportBookings = () => {
+    const list = filteredBookings.length > 0 ? filteredBookings : bookings;
+    if (list.length === 0) {
+      toast('No bookings available to export', 'info');
+      return;
+    }
+    const headers = [
+      'Booking Number',
+      'Unit Number',
+      'Project Name',
+      'Customer Lead',
+      'Phone Number',
+      'Email',
+      'Agreement Value (INR)',
+      'Booking Amount (INR)',
+      'Status',
+      'Booking Date',
+    ];
+    const rows = list.map((b) => [
+      b.bookingNumber || '',
+      b.unit?.unitNumber || b.unitNumber || '',
+      b.unit?.project?.name || b.projectName || '',
+      b.lead?.customerName || b.leadName || '',
+      b.lead?.phoneNumber || '',
+      b.lead?.email || '',
+      b.agreementValue || 0,
+      b.bookingAmount || 0,
+      b.status || '',
+      formatDate(b.bookingDate || b.createdAt),
+    ]);
+    const dateStr = new Date().toISOString().slice(0, 10);
+    exportToCsv(`Bookings_Report_${dateStr}.csv`, headers, rows);
+    toast(`Exported ${list.length} bookings to Excel successfully!`, 'success');
+  };
+
   // DataTables Columns
   const tableColumns = useMemo(
     () => [
@@ -287,6 +324,8 @@ export default function Bookings() {
         onPrimaryAction={handleOpenCreate}
         onRefresh={() => fetchBookings(true)}
         refreshing={refreshing}
+        onExport={handleExportBookings}
+        exportLabel="Export Excel"
       />
 
       {/* KPI Summary Cards */}

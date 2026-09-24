@@ -47,7 +47,7 @@ export default function BookingReceiptModal({ isOpen, onClose, booking }) {
             {/* Voucher Header */}
             <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center pb-3 mb-3 border-bottom gap-2">
               <div>
-                <h4 className="fw-bold mb-0 text-primary">EstateFlow CRM</h4>
+                <h4 className="fw-bold mb-0 text-primary">Real Estate Flow CRM</h4>
                 <small className="text-muted">Official Property Reservation Acknowledgment</small>
               </div>
               <div className="text-sm-end">

@@ -20,6 +20,7 @@ import LeadStatsCards from '../components/leads/LeadStatsCards';
 import LeadFilterBar from '../components/leads/LeadFilterBar';
 import LeadModal from '../components/leads/LeadModal';
 import LeadNotesModal from '../components/leads/LeadNotesModal';
+import { exportToCsv } from '../utils/exportUtils';
 
 export default function Leads() {
   const { user } = useAuth();
@@ -243,6 +244,46 @@ export default function Leads() {
     });
   }, [leads, searchTerm, stageFilter]);
 
+  // Export filtered leads to Excel / CSV
+  const handleExportLeads = () => {
+    const leadsToExport = filteredLeads.length > 0 ? filteredLeads : leads;
+    if (leadsToExport.length === 0) {
+      toast('No leads available to export', 'info');
+      return;
+    }
+    const headers = [
+      'Customer Name',
+      'Email',
+      'Phone Number',
+      'City',
+      'Stage',
+      'Source',
+      'Preferred Unit',
+      'Budget Min',
+      'Budget Max',
+      'Assigned Agent',
+      'Next Follow-up Date',
+      'Created Date',
+    ];
+    const rows = leadsToExport.map((l) => [
+      l.customerName || '',
+      l.email || '',
+      l.phoneNumber || '',
+      l.city || '',
+      l.stage || 'New',
+      l.source || '',
+      l.preferredUnitType || '',
+      l.budgetMin || '',
+      l.budgetMax || '',
+      l.assignedTo?.name || (typeof l.assignedTo === 'string' ? l.assignedTo : 'Unassigned'),
+      l.nextFollowUpDate ? new Date(l.nextFollowUpDate).toLocaleDateString() : '',
+      formatDate(l.createdAt || l.addedTime),
+    ]);
+    const dateStr = new Date().toISOString().slice(0, 10);
+    exportToCsv(`Leads_Pipeline_${dateStr}.csv`, headers, rows);
+    toast(`Exported ${leadsToExport.length} leads to Excel successfully!`, 'success');
+  };
+
   // DataTables Columns
   const tableColumns = useMemo(
     () => [
@@ -367,6 +408,8 @@ export default function Leads() {
         onPrimaryAction={handleOpenCreate}
         onRefresh={() => fetchLeads(true)}
         refreshing={refreshing}
+        onExport={handleExportLeads}
+        exportLabel="Export Excel"
       />
 
       {/* Stage Summary Cards */}

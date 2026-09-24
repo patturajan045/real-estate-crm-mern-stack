@@ -1,4 +1,4 @@
-# EstateFlow CRM - Real Estate Sales & Inventory Platform
+# Real Estate Flow CRM - Real Estate Sales & Inventory Platform
 
 A modern, production-grade, and responsive **MERN Stack (MongoDB, Express, React, Node.js)** Real Estate Customer Relationship Management (CRM) and Inventory Management System.
 

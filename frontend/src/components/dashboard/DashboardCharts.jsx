@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -26,70 +27,63 @@ ChartJS.register(
 export default function DashboardCharts({ data }) {
   const { isDark } = useTheme();
   const { t } = useCms();
+  const navigate = useNavigate();
 
-  const textColor = isDark ? '#94a3b8' : '#64748b';
-  const gridColor = isDark ? '#1e2c47' : '#e2e8f0';
+  const textColor = isDark ? '#cbd5e1' : '#475569';
+  const gridColor = isDark ? 'rgba(255, 255, 255, 0.08)' : '#f1f5f9';
+  const borderColor = isDark ? '#121a2d' : '#ffffff';
 
-  // Leads pipeline data
+  // Leads pipeline data from database
   const pipelineData = useMemo(() => {
-    const stages = ['New', 'Contacted', 'Site Visit Scheduled', 'Negotiation', 'Booking Confirmed', 'Lost'];
-    const counts = stages.map(stage => {
-      const match = data?.pipeline?.find(p => p.stage === stage || p._id === stage);
-      return match ? match.count : 0;
-    });
+    const stages = data?.leadsByStage || {};
+    const labels = ['New', 'Contacted', 'Site Visit', 'Interested', 'Negotiation', 'Booked', 'Lost'];
+    const counts = labels.map((stage) => stages[stage] || 0);
 
     return {
-      labels: ['New', 'Contacted', 'Site Visit', 'Negotiation', 'Confirmed', 'Lost'],
+      labels,
       datasets: [
         {
-          label: 'Leads',
+          label: 'Active Leads',
           data: counts,
           backgroundColor: [
-            'rgba(59, 130, 246, 0.75)',
-            'rgba(6, 182, 212, 0.75)',
-            'rgba(245, 158, 11, 0.75)',
-            'rgba(139, 92, 246, 0.75)',
-            'rgba(16, 185, 129, 0.75)',
-            'rgba(239, 68, 68, 0.75)',
+            '#3b82f6', // New
+            '#8b5cf6', // Contacted
+            '#06b6d4', // Site Visit
+            '#f59e0b', // Interested
+            '#f97316', // Negotiation
+            '#10b981', // Booked
+            '#94a3b8', // Lost
           ],
-          borderColor: [
-            '#3b82f6',
-            '#06b6d4',
-            '#f59e0b',
-            '#8b5cf6',
-            '#10b981',
-            '#ef4444',
-          ],
-          borderWidth: 1.5,
-          borderRadius: 4,
+          borderRadius: 6,
+          maxBarThickness: 38,
         },
       ],
     };
-  }, [data?.pipeline]);
+  }, [data?.leadsByStage]);
 
-  // Inventory doughnut data
+  // Inventory doughnut data from database
   const inventoryData = useMemo(() => {
-    const inv = data?.inventory || {};
-    const available = inv.available || 0;
-    const reserved = inv.reserved || 0;
-    const booked = inv.booked || 0;
+    const units = data?.unitsByStatus || {};
+    const labels = ['Available', 'Blocked', 'Booked', 'Sold'];
+    const counts = labels.map((status) => units[status] || 0);
 
     return {
-      labels: ['Available', 'Reserved', 'Booked'],
+      labels,
       datasets: [
         {
-          data: [available, reserved, booked],
+          data: counts,
           backgroundColor: [
-            'rgba(16, 185, 129, 0.85)',
-            'rgba(245, 158, 11, 0.85)',
-            'rgba(59, 130, 246, 0.85)',
+            '#10b981', // Available
+            '#f59e0b', // Blocked
+            '#ef4444', // Booked
+            '#8b5cf6', // Sold
           ],
-          borderColor: isDark ? '#121a2d' : '#ffffff',
-          borderWidth: 2,
+          borderColor: borderColor,
+          borderWidth: 3,
         },
       ],
     };
-  }, [data?.inventory, isDark]);
+  }, [data?.unitsByStatus, borderColor]);
 
   const barOptions = {
     responsive: true,
@@ -100,19 +94,20 @@ export default function DashboardCharts({ data }) {
         backgroundColor: isDark ? '#1e293b' : '#ffffff',
         titleColor: isDark ? '#f8fafc' : '#0f172a',
         bodyColor: isDark ? '#cbd5e1' : '#334155',
-        borderColor: gridColor,
+        borderColor: isDark ? '#334155' : '#e2e8f0',
         borderWidth: 1,
         padding: 10,
+        cornerRadius: 8,
       },
     },
     scales: {
       x: {
         grid: { display: false },
-        ticks: { color: textColor, font: { size: 11 } },
+        ticks: { color: textColor, font: { size: 11.5, weight: '500' } },
       },
       y: {
         grid: { color: gridColor },
-        ticks: { color: textColor, stepSize: 1, font: { size: 11 } },
+        ticks: { color: textColor, precision: 0, font: { size: 11 } },
         beginAtZero: true,
       },
     },
@@ -127,52 +122,67 @@ export default function DashboardCharts({ data }) {
         labels: {
           color: textColor,
           boxWidth: 12,
-          padding: 12,
-          font: { size: 11.5 },
+          padding: 14,
+          font: { size: 11.5, weight: '500' },
         },
       },
       tooltip: {
         backgroundColor: isDark ? '#1e293b' : '#ffffff',
         titleColor: isDark ? '#f8fafc' : '#0f172a',
         bodyColor: isDark ? '#cbd5e1' : '#334155',
-        borderColor: gridColor,
+        borderColor: isDark ? '#334155' : '#e2e8f0',
         borderWidth: 1,
         padding: 10,
+        cornerRadius: 8,
       },
     },
     cutout: '70%',
   };
 
   return (
-    <div className="row g-3 mb-4">
-      {/* Pipeline Bar Chart */}
+    <div className="row g-3 g-md-4 mb-3 mb-sm-4">
+      {/* 1. Lead Pipeline Stages Bar Chart */}
       <div className="col-12 col-lg-8">
-        <div className="card crm-card border-0 shadow-sm h-100">
-          <div className="card-header bg-transparent border-0 pt-3 pb-0 d-flex align-items-center justify-content-between">
-            <h5 className="card-title fw-bold mb-0 text-body" style={{ fontSize: 'var(--crm-font-h3)' }}>
-              <i className="fas fa-chart-column text-primary me-2"></i>
-              {t('dashboard_pipeline_heading', 'Leads by Pipeline Stage')}
+        <div className="crm-card h-100 mb-0 border-0 shadow-sm">
+          <div className="crm-card-header d-flex align-items-center justify-content-between p-3 border-bottom">
+            <h5 className="crm-card-title fw-bold mb-0 text-body d-flex align-items-center">
+              <i className="fas fa-chart-bar text-primary me-2"></i>
+              <span>{t('dashboard_pipeline_heading', 'Leads by Pipeline Stage')}</span>
             </h5>
-            <span className="badge bg-body-secondary text-muted small fw-normal">Live</span>
+            <button
+              type="button"
+              className="btn btn-sm btn-outline-secondary flex-shrink-0"
+              onClick={() => navigate('/leads')}
+            >
+              Manage Leads
+            </button>
           </div>
-          <div className="card-body p-3" style={{ height: '300px' }}>
-            <Bar data={pipelineData} options={barOptions} />
+          <div className="crm-card-body p-3">
+            <div style={{ height: 'clamp(220px, 30vh, 280px)', width: '100%', position: 'relative' }}>
+              <Bar data={pipelineData} options={barOptions} />
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Inventory Doughnut Chart */}
+      {/* 2. Property Inventory Doughnut Chart */}
       <div className="col-12 col-lg-4">
-        <div className="card crm-card border-0 shadow-sm h-100">
-          <div className="card-header bg-transparent border-0 pt-3 pb-0 d-flex align-items-center justify-content-between">
-            <h5 className="card-title fw-bold mb-0 text-body" style={{ fontSize: 'var(--crm-font-h3)' }}>
+        <div className="crm-card h-100 mb-0 border-0 shadow-sm">
+          <div className="crm-card-header d-flex align-items-center justify-content-between p-3 border-bottom">
+            <h5 className="crm-card-title fw-bold mb-0 text-body d-flex align-items-center">
               <i className="fas fa-chart-pie text-success me-2"></i>
-              {t('dashboard_inventory_heading', 'Unit Inventory Status')}
+              <span>{t('dashboard_inventory_heading', 'Unit Inventory Status')}</span>
             </h5>
-            <span className="badge bg-body-secondary text-muted small fw-normal">Inventory</span>
+            <button
+              type="button"
+              className="btn btn-sm btn-outline-secondary flex-shrink-0"
+              onClick={() => navigate('/properties')}
+            >
+              Units
+            </button>
           </div>
-          <div className="card-body p-3 d-flex align-items-center justify-content-center" style={{ height: '300px' }}>
-            <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+          <div className="crm-card-body p-3 d-flex flex-column align-items-center justify-content-center">
+            <div style={{ height: 'clamp(200px, 28vh, 240px)', width: '100%', position: 'relative' }}>
               <Doughnut data={inventoryData} options={doughnutOptions} />
             </div>
           </div>

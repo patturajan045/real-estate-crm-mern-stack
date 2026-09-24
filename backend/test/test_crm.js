@@ -438,7 +438,9 @@ async function runAllTests() {
 }
 
 if (require.main === module) {
-  runAllTests().catch(err => {
+  runAllTests().then(() => {
+    process.exit(0);
+  }).catch(err => {
     console.error('Test suite failed:', err);
     process.exit(1);
   });

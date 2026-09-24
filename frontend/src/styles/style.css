@@ -773,63 +773,64 @@ body {
 @media (max-width: 767.98px) {
   .crm-card-header,
   .crm-dashboard .crm-card-header {
-    flex-direction: column !important;
+    flex-direction: row !important;
     align-items: center !important;
-    justify-content: center !important;
-    text-align: center !important;
-    padding: 0.75rem 0.95rem !important;
-    gap: 0.65rem !important;
+    justify-content: space-between !important;
+    text-align: left !important;
+    padding: 0.65rem 0.85rem !important;
+    gap: 0.5rem !important;
   }
   
   .crm-card-title,
   .crm-dashboard .crm-card-title {
-    font-size: clamp(0.82rem, 3vw, 0.95rem) !important;
-    white-space: normal !important;
-    overflow: visible !important;
-    text-overflow: unset !important;
-    justify-content: center !important;
-    text-align: center !important;
-    flex: 0 0 auto !important;
-    width: 100% !important;
+    font-size: 0.9rem !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+    flex: 1 1 auto !important;
+    width: auto !important;
     margin: 0 !important;
-    line-height: 1.3 !important;
+    line-height: 1.25 !important;
   }
 
   .crm-card-title i,
   .crm-dashboard .crm-card-title i {
-    margin-right: 0.4rem;
-    font-size: 0.9rem;
+    margin-right: 0.35rem;
+    font-size: 0.85rem;
   }
 
   .crm-card-header > *:not(.crm-card-title) {
     margin: 0 !important;
-    width: 100% !important;
-    display: flex !important;
-    justify-content: center !important;
+    width: auto !important;
+    display: inline-flex !important;
+    justify-content: flex-end !important;
     align-items: center !important;
-    flex-wrap: wrap !important;
-    gap: 0.45rem !important;
+    flex-wrap: nowrap !important;
+    gap: 0.35rem !important;
+    flex-shrink: 0 !important;
   }
 
-  /* Centered Action Button below title on mobile */
+  /* Compact Action Button on mobile */
   .crm-card-header .btn,
   .crm-card-header .btn-sm,
   .crm-card-header a.btn {
-    padding: 0.32rem 0.9rem !important;
-    font-size: 0.76rem !important;
-    line-height: 1.35 !important;
+    padding: 0.25rem 0.65rem !important;
+    font-size: 0.74rem !important;
+    line-height: 1.3 !important;
     width: auto !important;
     max-width: 100% !important;
     border-radius: var(--crm-radius-sm) !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 0.35rem !important;
+    gap: 0.25rem !important;
   }
 
   .crm-card-header .btn i,
   .crm-card-header a.btn i {
-    font-size: 0.72rem !important;
+    font-size: 0.7rem !important;
   }
 }
 
@@ -3954,6 +3955,160 @@ table.dataTable > tbody > tr.child span.dtr-data {
     margin-bottom: 0.45rem;
   }
 }
+
+/* ==========================================================================
+   ADVANCED MOBILE & TABLET RESPONSIVE OVERRIDES (UI/UX Optimization)
+   Prevents card collapsing, reduces icon/font sizes, and optimizes layouts
+   ========================================================================== */
+
+@media (max-width: 767.98px) {
+  /* Prevent horizontal overflow and card collapse across all pages */
+  .crm-content-container,
+  .crm-content {
+    padding-left: 0.65rem !important;
+    padding-right: 0.65rem !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+  }
+
+  .crm-card,
+  .card.crm-card {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    margin-bottom: 0.85rem !important;
+    border-radius: 0.75rem !important;
+  }
+
+  .crm-card-body,
+  .card-body {
+    padding: 0.75rem !important;
+  }
+
+  /* Reduce Heading & Title font sizes in mobile view */
+  .page-title-creative {
+    font-size: 1.25rem !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  .page-subtitle-creative {
+    font-size: 0.78rem !important;
+    line-height: 1.35 !important;
+    padding: 0 0.5rem !important;
+  }
+
+  .crm-page-header h1,
+  .crm-page-header .h3 {
+    font-size: 1.2rem !important;
+  }
+
+  .page-icon-badge {
+    width: 44px !important;
+    height: 44px !important;
+    font-size: 1.15rem !important;
+    margin-bottom: 0.65rem !important;
+  }
+
+  /* KPI Stat Cards on Mobile */
+  .stat-card {
+    padding: 0.75rem 0.85rem !important;
+    border-radius: 0.75rem !important;
+  }
+
+  .stat-value {
+    font-size: 1.35rem !important;
+    margin-bottom: 0.15rem !important;
+  }
+
+  .stat-label {
+    font-size: 0.72rem !important;
+    margin-bottom: 0.2rem !important;
+  }
+
+  .stat-icon {
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 0.95rem !important;
+    border-radius: 9px !important;
+  }
+
+  .stat-trend {
+    font-size: 0.68rem !important;
+  }
+
+  /* Quick Action Cards on Mobile */
+  .quick-action-card {
+    padding: 0.65rem 0.75rem !important;
+    border-radius: 0.65rem !important;
+    gap: 0.6rem !important;
+  }
+
+  .quick-action-icon {
+    width: 34px !important;
+    height: 34px !important;
+    font-size: 0.95rem !important;
+    border-radius: 8px !important;
+  }
+
+  /* Form Selects & Inputs (Fix for "All Master Projects" dropdown collapse) */
+  .form-select,
+  .form-control,
+  .input-group-text {
+    font-size: 0.82rem !important;
+    padding: 0.38rem 0.65rem !important;
+    border-radius: 0.5rem !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  /* Responsive Tables on Mobile */
+  .table-responsive {
+    border-radius: 0.5rem !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table td,
+  .table th {
+    padding: 0.5rem 0.6rem !important;
+    font-size: 0.78rem !important;
+  }
+
+  /* Compact button styling on Mobile */
+  .btn-sm,
+  .btn {
+    font-size: 0.76rem !important;
+    padding: 0.32rem 0.7rem !important;
+  }
+}
+
+/* Glassmorphic Navbar Styling */
+.crm-mobile-header {
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border-bottom: 1px solid var(--crm-border) !important;
+}
+
+[data-bs-theme="dark"] .crm-mobile-header {
+  background-color: rgba(18, 26, 45, 0.9) !important;
+}
+
+.crm-header {
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border-bottom: 1px solid var(--crm-border) !important;
+}
+
+[data-bs-theme="dark"] .crm-header {
+  background-color: rgba(18, 26, 45, 0.9) !important;
+}
+
 
 
 

@@ -19,18 +19,13 @@ export default function QuickNoteModal({
       aria-modal="true"
       style={{ backgroundColor: 'rgba(0, 0, 0, 0.65)' }}
     >
-      <div className="modal-dialog modal-dialog-centered">
+      <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div className="modal-content border-0 shadow-lg">
           <div className="modal-header border-bottom py-3">
-            <div>
-              <h5 className="modal-title fw-bold text-body mb-0">
-                <i className="fas fa-comment-dots text-primary me-2"></i>
-                Log Follow-up Note
-              </h5>
-              <small className="text-muted">
-                Customer: <span className="fw-semibold text-body">{lead.customerName}</span>
-              </small>
-            </div>
+            <h5 className="modal-title fw-bold text-body mb-0">
+              <i className="fas fa-phone-alt text-success me-2"></i>
+              Log Activity & Follow-up
+            </h5>
             <button
               type="button"
               className="btn-close"
@@ -41,47 +36,68 @@ export default function QuickNoteModal({
 
           <form onSubmit={onSubmit}>
             <div className="modal-body p-4">
+              {/* Customer Display */}
               <div className="mb-3">
-                <label className="form-label small fw-semibold">Note / Interaction Summary *</label>
-                <textarea
-                  name="content"
-                  className="form-control"
-                  rows="4"
-                  placeholder="Summary of customer call, site visit feedback, or next steps..."
-                  required
-                  value={formData.content}
-                  onChange={onChange}
-                ></textarea>
+                <label className="form-label fw-bold small text-muted text-uppercase mb-1">Customer</label>
+                <div className="fw-semibold text-primary fs-6">
+                  {lead.customerName} {lead.stage ? `(${lead.stage})` : ''}
+                </div>
               </div>
 
-              <div className="row g-3">
-                <div className="col-12 col-sm-6">
-                  <label className="form-label small fw-semibold">Update Stage</label>
-                  <select
-                    name="stage"
-                    className="form-select form-select-sm"
-                    value={formData.stage}
+              {/* Call / Interaction Summary */}
+              <div className="mb-3">
+                <label className="form-label small fw-semibold">Call / Meeting Summary *</label>
+                <div className="input-group">
+                  <span className="input-group-text"><i className="fas fa-comment-alt"></i></span>
+                  <textarea
+                    name="content"
+                    className="form-control"
+                    rows="3"
+                    placeholder="Key highlights from client call, scheduled site visit, or price inquiry..."
+                    required
+                    value={formData.content}
                     onChange={onChange}
-                  >
-                    <option value="">Keep Current ({lead.stage})</option>
-                    <option value="New">New</option>
-                    <option value="Contacted">Contacted</option>
-                    <option value="Site Visit Scheduled">Site Visit Scheduled</option>
-                    <option value="Negotiation">Negotiation</option>
-                    <option value="Booking Confirmed">Booking Confirmed</option>
-                    <option value="Lost">Lost</option>
-                  </select>
+                  ></textarea>
+                </div>
+              </div>
+
+              <div className="row g-2">
+                {/* Update Stage */}
+                <div className="col-12 col-md-6">
+                  <label className="form-label small fw-semibold">Update Stage</label>
+                  <div className="input-group">
+                    <span className="input-group-text"><i className="fas fa-step-forward"></i></span>
+                    <select
+                      name="stage"
+                      className="form-select form-select-sm"
+                      value={formData.stage}
+                      onChange={onChange}
+                    >
+                      <option value="">Keep Current Stage</option>
+                      <option value="New">New</option>
+                      <option value="Contacted">Contacted</option>
+                      <option value="Site Visit">Site Visit</option>
+                      <option value="Interested">Interested</option>
+                      <option value="Negotiation">Negotiation</option>
+                      <option value="Booked">Booked</option>
+                      <option value="Lost">Lost</option>
+                    </select>
+                  </div>
                 </div>
 
-                <div className="col-12 col-sm-6">
-                  <label className="form-label small fw-semibold">Next Follow-up Date</label>
-                  <input
-                    type="date"
-                    name="nextFollowUpDate"
-                    className="form-control form-control-sm"
-                    value={formData.nextFollowUpDate}
-                    onChange={onChange}
-                  />
+                {/* Next Follow-up Date & Time */}
+                <div className="col-12 col-md-6">
+                  <label className="form-label small fw-semibold">Next Follow-up Date & Time</label>
+                  <div className="input-group">
+                    <span className="input-group-text"><i className="far fa-calendar-alt"></i></span>
+                    <input
+                      type="datetime-local"
+                      name="nextFollowUpDate"
+                      className="form-control form-control-sm"
+                      value={formData.nextFollowUpDate}
+                      onChange={onChange}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -96,7 +112,7 @@ export default function QuickNoteModal({
               </button>
               <button
                 type="submit"
-                className="btn btn-primary btn-sm d-inline-flex align-items-center gap-1.5"
+                className="btn btn-primary btn-sm d-inline-flex align-items-center gap-1.5 px-3"
                 disabled={submitting}
               >
                 {submitting ? (
@@ -107,7 +123,7 @@ export default function QuickNoteModal({
                 ) : (
                   <>
                     <i className="fas fa-save"></i>
-                    <span>Save Note & Update</span>
+                    <span>Save Activity</span>
                   </>
                 )}
               </button>

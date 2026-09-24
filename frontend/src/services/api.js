@@ -1,9 +1,19 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
+// Determine and normalize API baseURL for production (Render) and local dev (Vite)
+const getApiBaseUrl = () => {
+  const envUrl = import.meta.env.VITE_API_URL?.trim();
+  if (envUrl) {
+    // Strip trailing slashes and trailing /api (all service routes include /api/...)
+    return envUrl.replace(/\/+$/, '').replace(/\/api$/, '');
+  }
+  // In development without VITE_API_URL, use Vite proxy or localhost
+  return import.meta.env.DEV ? '' : '';
+};
+
 const api = axios.create({
-  // Use the Vite environment variable, falling back to localhost for local development
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  baseURL: getApiBaseUrl(),
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',

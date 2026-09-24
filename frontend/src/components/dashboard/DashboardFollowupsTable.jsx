@@ -1,148 +1,145 @@
 import React from 'react';
-import { formatDate, getStageBadgeClass, getInitials } from '../../utils/formatters';
+import { getStageBadgeClass } from '../../utils/formatters';
 import { useCms } from '../../context/CmsContext';
-import EmptyState from '../common/EmptyState';
 
 export default function DashboardFollowupsTable({
   followups = [],
   onOpenQuickNote,
   onNavigateLead,
-  onOpenQuickLead,
 }) {
   const { t } = useCms();
 
   return (
-    <div className="card crm-card border-0 shadow-sm mb-4" id="sectionFollowups">
-      <div className="card-header bg-transparent border-bottom d-flex align-items-center justify-content-between py-3">
-        <div className="d-flex align-items-center gap-2">
-          <i className="fas fa-calendar-check text-warning fs-5"></i>
-          <h5 className="card-title fw-bold mb-0 text-body" style={{ fontSize: 'var(--crm-font-h3)' }}>
-            {t('dashboard_followups_heading', 'Pending & Urgent Follow-ups')}
-          </h5>
-        </div>
-        <span className="badge bg-warning-subtle text-warning fw-semibold">
-          {followups.length} Due
-        </span>
-      </div>
-
-      <div className="card-body p-0">
-        {followups.length === 0 ? (
-          <EmptyState
-            icon="fa-check-circle"
-            title="All follow-ups completed!"
-            description="There are no overdue or pending follow-ups scheduled at this time."
-            actionLabel="Add New Lead"
-            onAction={onOpenQuickLead}
-          />
-        ) : (
-          <div className="table-responsive">
-            <table className="table table-hover align-middle mb-0 w-100">
-              <thead className="table-light">
-                <tr>
-                  <th scope="col" className="ps-3">Customer</th>
-                  <th scope="col">Stage</th>
-                  <th scope="col">Follow-up Due</th>
-                  <th scope="col">Assigned Agent</th>
-                  <th scope="col" className="text-end pe-3">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {followups.map((lead) => {
-                  const isOverdue = lead.nextFollowUpDate && new Date(lead.nextFollowUpDate) < new Date();
-                  return (
-                    <tr key={lead.id || lead._id}>
-                      <td className="ps-3">
-                        <div className="d-flex align-items-center gap-2">
-                          <div
-                            className="rounded-circle bg-primary-subtle text-primary d-flex align-items-center justify-content-center fw-bold small flex-shrink-0"
-                            style={{ width: '34px', height: '34px' }}
-                          >
-                            {getInitials(lead.customerName)}
-                          </div>
-                          <div className="min-w-0">
-                            <span
-                              className="fw-semibold text-body text-truncate d-block cursor-pointer text-decoration-hover"
-                              onClick={() => onNavigateLead(lead.id || lead._id)}
-                              title={lead.customerName}
-                              style={{ cursor: 'pointer' }}
-                            >
-                              {lead.customerName}
-                            </span>
-                            {lead.phoneNumber && (
-                              <small className="text-muted d-block text-truncate">
-                                <i className="fas fa-phone-alt me-1 text-muted"></i>
-                                {lead.phoneNumber}
-                              </small>
-                            )}
-                          </div>
-                        </div>
-                      </td>
-
-                      <td>
-                        <span className={`badge ${getStageBadgeClass(lead.stage)}`}>
-                          {lead.stage}
-                        </span>
-                      </td>
-
-                      <td>
-                        <div className="d-flex align-items-center gap-1.5">
-                          <i className={`fas fa-clock ${isOverdue ? 'text-danger' : 'text-muted'} small`}></i>
-                          <span className={`small fw-medium ${isOverdue ? 'text-danger' : 'text-body'}`}>
-                            {formatDate(lead.nextFollowUpDate)}
-                          </span>
-                          {isOverdue && (
-                            <span className="badge bg-danger-subtle text-danger micro-badge ms-1">
-                              Overdue
-                            </span>
-                          )}
-                        </div>
-                      </td>
-
-                      <td>
-                        <small className="text-muted">
-                          {lead.assignedTo?.name || 'Unassigned'}
-                        </small>
-                      </td>
-
-                      <td className="text-end pe-3">
-                        <div className="btn-group btn-group-sm">
-                          {lead.phoneNumber && (
-                            <a
-                              href={`tel:${lead.phoneNumber}`}
-                              className="btn btn-outline-secondary btn-sm"
-                              title={`Call ${lead.customerName}`}
-                              aria-label={`Call ${lead.customerName}`}
-                            >
-                              <i className="fas fa-phone text-success"></i>
-                            </a>
-                          )}
-                          <button
-                            type="button"
-                            className="btn btn-outline-primary btn-sm"
-                            onClick={() => onOpenQuickNote(lead)}
-                            title="Log Activity Note"
-                            aria-label="Log Note"
-                          >
-                            <i className="fas fa-pen-to-square"></i>
-                          </button>
-                          <button
-                            type="button"
-                            className="btn btn-outline-secondary btn-sm"
-                            onClick={() => onNavigateLead(lead.id || lead._id)}
-                            title="View Full Lead Details"
-                            aria-label="View Details"
-                          >
-                            <i className="fas fa-arrow-right"></i>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+    <div className="row g-3 g-md-4" id="sectionFollowups">
+      <div className="col-12">
+        <div className="crm-card mb-0 border-0 shadow-sm">
+          <div className="crm-card-header d-flex align-items-center justify-content-between p-3 border-bottom">
+            <h5 className="crm-card-title fw-bold mb-0 text-warning d-flex align-items-center">
+              <i className="fas fa-bell me-2"></i>
+              <span>{t('dashboard_followups_heading', 'Pending & Urgent Follow-ups')}</span>
+            </h5>
+            <span className="badge bg-warning-subtle text-warning flex-shrink-0 px-2.5 py-1">
+              {followups.length} Actions Due
+            </span>
           </div>
-        )}
+
+          <div className="crm-card-body p-0">
+            {followups.length === 0 ? (
+              <div className="text-center py-5">
+                <div className="crm-avatar mx-auto mb-2 bg-success-subtle text-success">
+                  <i className="fas fa-check-circle"></i>
+                </div>
+                <div className="fw-semibold text-body">All caught up!</div>
+                <p className="text-muted small mb-0">
+                  No pending or overdue follow-ups for today. Great job keeping in touch with clients!
+                </p>
+              </div>
+            ) : (
+              <div className="table-responsive">
+                <table className="table table-hover align-middle mb-0 w-100" id="tableFollowups">
+                  <thead className="bg-body-tertiary">
+                    <tr>
+                      <th className="ps-3 py-2.5">Customer</th>
+                      <th className="py-2.5">Stage</th>
+                      <th className="py-2.5">Due</th>
+                      <th className="py-2.5">Assigned Rep</th>
+                      <th className="text-end pe-3 py-2.5">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {followups.map((item) => {
+                      const isOverdue = item.nextFollowUpDate && new Date(item.nextFollowUpDate) < new Date().setHours(0, 0, 0, 0);
+
+                      return (
+                        <tr key={item.id || item._id}>
+                          <td className="ps-3 py-2.5">
+                            <div
+                              className="fw-semibold text-body cursor-pointer"
+                              onClick={() => onNavigateLead(item.id || item._id)}
+                              title={item.customerName}
+                            >
+                              {item.customerName}
+                            </div>
+                            {item.phoneNumber && (
+                              <div className="small text-muted">
+                                <a
+                                  href={`tel:${item.phoneNumber}`}
+                                  className="text-decoration-none text-muted"
+                                  title={`Call ${item.customerName}`}
+                                >
+                                  <i className="fas fa-phone-alt me-1 text-success"></i>
+                                  {item.phoneNumber}
+                                </a>
+                              </div>
+                            )}
+                          </td>
+
+                          <td className="py-2.5">
+                            <span className={`badge ${getStageBadgeClass(item.stage)}`}>
+                              {item.stage}
+                            </span>
+                          </td>
+
+                          <td className="py-2.5">
+                            {isOverdue ? (
+                              <span className="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-0.5 small">
+                                <i className="fas fa-exclamation-circle me-1"></i> Overdue
+                              </span>
+                            ) : (
+                              <span className="badge bg-warning-subtle text-warning border border-warning-subtle px-2 py-0.5 small">
+                                <i className="fas fa-clock me-1"></i> Today
+                              </span>
+                            )}
+                          </td>
+
+                          <td className="py-2.5">
+                            <span className="small text-secondary">
+                              {item.assignedToName || item.assignedTo?.name || 'Unassigned'}
+                            </span>
+                          </td>
+
+                          <td className="text-end pe-3 py-2.5">
+                            <div className="d-inline-flex align-items-center justify-content-end gap-1">
+                              {item.phoneNumber && (
+                                <>
+                                  <a
+                                    href={`tel:${item.phoneNumber}`}
+                                    className="btn btn-outline-secondary btn-sm py-1 px-1.5 d-none d-sm-inline-flex align-items-center"
+                                    title={`Call ${item.customerName}`}
+                                  >
+                                    <i className="fas fa-phone-alt small text-success"></i>
+                                  </a>
+                                  <a
+                                    href={`https://wa.me/${(item.phoneNumber || '').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Hello ${item.customerName}, following up regarding your property inquiry.`)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="btn btn-outline-success btn-sm py-1 px-1.5 d-inline-flex align-items-center"
+                                    title={`WhatsApp ${item.customerName}`}
+                                  >
+                                    <i className="fab fa-whatsapp small"></i>
+                                  </a>
+                                </>
+                              )}
+                              <button
+                                type="button"
+                                className="btn btn-sm btn-primary py-1 px-2.5 d-inline-flex align-items-center gap-1.5 shadow-sm"
+                                onClick={() => onOpenQuickNote(item)}
+                                title="Log call summary or schedule next follow-up"
+                              >
+                                <i className="fas fa-pen small"></i>
+                                <span className="d-none d-sm-inline">Log Note</span>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

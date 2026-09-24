@@ -404,46 +404,67 @@ export default function Properties() {
         }}
         onRefresh={() => fetchData(true)}
         refreshing={refreshing}
-      >
-        {/* Tab Switcher Pills */}
-        <div className="btn-group btn-group-sm me-md-2" role="group">
-          <button
-            type="button"
-            className={`btn ${activeTab === 'units' ? 'btn-primary' : 'btn-outline-secondary'}`}
-            onClick={() => setActiveTab('units')}
-          >
-            <i className="fas fa-door-open me-1"></i> Units ({units.length})
-          </button>
-          <button
-            type="button"
-            className={`btn ${activeTab === 'projects' ? 'btn-primary' : 'btn-outline-secondary'}`}
-            onClick={() => setActiveTab('projects')}
-          >
-            <i className="fas fa-city me-1"></i> Projects ({projects.length})
-          </button>
-          <button
-            type="button"
-            className={`btn ${activeTab === 'buildings' ? 'btn-primary' : 'btn-outline-secondary'}`}
-            onClick={() => setActiveTab('buildings')}
-          >
-            <i className="fas fa-building me-1"></i> Buildings ({buildings.length})
-          </button>
-        </div>
-      </PageHeader>
+      />
+
+      {/* Responsive Segmented Tab Pill Navigation Bar */}
+      <div className="d-flex align-items-center gap-2 mb-3 overflow-x-auto pb-1" style={{ WebkitOverflowScrolling: 'touch' }}>
+        <button
+          type="button"
+          className={`btn btn-sm d-inline-flex align-items-center gap-1.5 px-3 py-1.5 rounded-pill text-nowrap ${
+            activeTab === 'units' ? 'btn-primary shadow-sm' : 'btn-outline-secondary'
+          }`}
+          onClick={() => setActiveTab('units')}
+        >
+          <i className="fas fa-door-open"></i>
+          <span>Units</span>
+          <span className={`badge rounded-pill ms-1 ${activeTab === 'units' ? 'bg-white text-primary' : 'bg-body-secondary text-body'}`}>
+            {units.length}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          className={`btn btn-sm d-inline-flex align-items-center gap-1.5 px-3 py-1.5 rounded-pill text-nowrap ${
+            activeTab === 'projects' ? 'btn-primary shadow-sm' : 'btn-outline-secondary'
+          }`}
+          onClick={() => setActiveTab('projects')}
+        >
+          <i className="fas fa-city"></i>
+          <span>Master Projects</span>
+          <span className={`badge rounded-pill ms-1 ${activeTab === 'projects' ? 'bg-white text-primary' : 'bg-body-secondary text-body'}`}>
+            {projects.length}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          className={`btn btn-sm d-inline-flex align-items-center gap-1.5 px-3 py-1.5 rounded-pill text-nowrap ${
+            activeTab === 'buildings' ? 'btn-primary shadow-sm' : 'btn-outline-secondary'
+          }`}
+          onClick={() => setActiveTab('buildings')}
+        >
+          <i className="fas fa-building"></i>
+          <span>Buildings & Towers</span>
+          <span className={`badge rounded-pill ms-1 ${activeTab === 'buildings' ? 'bg-white text-primary' : 'bg-body-secondary text-body'}`}>
+            {buildings.length}
+          </span>
+        </button>
+      </div>
 
       {/* ======================================================== */}
-      {/* TAB 1: UNITS */}
+      {/* TAB 1: UNITS                                            */}
       {/* ======================================================== */}
       {activeTab === 'units' && (
         <>
-          {/* Units Filter & View Bar */}
-          <div className="card crm-card border-0 shadow-sm p-3 mb-3">
+          {/* Units Filter & View Bar (Protected from Mobile Collapse) */}
+          <div className="card crm-card border-0 shadow-sm p-2.5 p-sm-3 mb-3">
             <div className="row g-2 align-items-center">
-              <div className="col-12 col-sm-6 col-md-3">
+              <div className="col-12 col-sm-6 col-md-4">
                 <select
-                  className="form-select form-select-sm"
+                  className="form-select form-select-sm text-truncate"
                   value={unitFilterProject}
                   onChange={(e) => setUnitFilterProject(e.target.value)}
+                  aria-label="Filter by Master Project"
                 >
                   <option value="">All Master Projects</option>
                   {projects.map((p) => (
@@ -459,11 +480,13 @@ export default function Properties() {
                   className="form-select form-select-sm"
                   value={unitFilterStatus}
                   onChange={(e) => setUnitFilterStatus(e.target.value)}
+                  aria-label="Filter by Status"
                 >
                   <option value="All">All Statuses</option>
                   <option value="Available">Available</option>
-                  <option value="Reserved">Reserved</option>
+                  <option value="Blocked">Blocked</option>
                   <option value="Booked">Booked</option>
+                  <option value="Sold">Sold</option>
                 </select>
               </div>
 
@@ -472,6 +495,7 @@ export default function Properties() {
                   className="form-select form-select-sm"
                   value={unitFilterType}
                   onChange={(e) => setUnitFilterType(e.target.value)}
+                  aria-label="Filter by Unit Type"
                 >
                   <option value="All">All Types</option>
                   <option value="1BHK">1BHK</option>
@@ -483,8 +507,8 @@ export default function Properties() {
                 </select>
               </div>
 
-              <div className="col-12 col-md-auto ms-auto d-flex align-items-center justify-content-end gap-2">
-                <span className="text-muted small text-nowrap d-none d-sm-inline">
+              <div className="col-12 col-md-auto ms-auto d-flex align-items-center justify-content-between justify-content-md-end gap-2 pt-1 pt-md-0 border-top border-top-md-0">
+                <span className="text-muted small text-nowrap" style={{ fontSize: '0.78rem' }}>
                   {filteredUnits.length} of {units.length} units
                 </span>
                 <div className="btn-group btn-group-sm">
@@ -534,111 +558,154 @@ export default function Properties() {
       )}
 
       {/* ======================================================== */}
-      {/* TAB 2: PROJECTS */}
+      {/* TAB 2: PROJECTS                                         */}
       {/* ======================================================== */}
       {activeTab === 'projects' && (
         <div className="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3">
-          {projects.map((proj) => (
-            <div key={proj.id || proj._id} className="col">
-              <div className="card crm-card border-0 shadow-sm h-100">
-                <div className="card-body p-3.5 d-flex flex-column justify-content-between">
-                  <div>
-                    <div className="d-flex align-items-center justify-content-between mb-2">
-                      <span className="badge bg-primary-subtle text-primary fw-bold">
-                        {proj.status || 'Active'}
-                      </span>
-                      <small className="text-muted">
-                        <i className="fas fa-location-dot me-1"></i>
-                        {proj.city}, {proj.state}
-                      </small>
+          {projects.map((proj) => {
+            const projId = proj.id || proj._id;
+            const projectUnits = units.filter(
+              (u) => (u.project?._id || u.project?.id || u.project) === projId
+            );
+            const availableCount = projectUnits.filter((u) => u.status === 'Available').length;
+            const projectBuildings = buildings.filter(
+              (b) => (b.project?._id || b.project?.id || b.project) === projId
+            );
+
+            return (
+              <div key={projId} className="col">
+                <div className="card crm-card border-0 shadow-sm h-100 overflow-hidden">
+                  <div className="card-body p-3.5 d-flex flex-column justify-content-between">
+                    <div>
+                      <div className="d-flex align-items-center justify-content-between mb-2">
+                        <span className="badge bg-primary-subtle text-primary border border-primary-subtle fw-semibold px-2 py-1">
+                          {proj.status || 'Active'}
+                        </span>
+                        <small className="text-muted d-flex align-items-center gap-1">
+                          <i className="fas fa-location-dot text-danger"></i>
+                          <span>{proj.city || 'City'}, {proj.state || 'State'}</span>
+                        </small>
+                      </div>
+
+                      <h5 className="fw-bold mb-1 text-body">{proj.name}</h5>
+                      {proj.builder && (
+                        <p className="text-muted small mb-2">
+                          Developer: <span className="fw-medium text-body">{proj.builder}</span>
+                        </p>
+                      )}
+
+                      {/* Project Inventory Summary Capsule */}
+                      <div className="d-flex align-items-center gap-2 p-2 rounded-2 bg-body-tertiary mb-3 small">
+                        <div className="flex-fill text-center border-end">
+                          <span className="d-block fw-bold text-primary">{projectUnits.length}</span>
+                          <span className="text-muted" style={{ fontSize: '0.7rem' }}>Total Units</span>
+                        </div>
+                        <div className="flex-fill text-center border-end">
+                          <span className="d-block fw-bold text-success">{availableCount}</span>
+                          <span className="text-muted" style={{ fontSize: '0.7rem' }}>Available</span>
+                        </div>
+                        <div className="flex-fill text-center">
+                          <span className="d-block fw-bold text-purple" style={{ color: '#8b5cf6' }}>{projectBuildings.length}</span>
+                          <span className="text-muted" style={{ fontSize: '0.7rem' }}>Towers</span>
+                        </div>
+                      </div>
+
+                      {proj.description && (
+                        <p className="text-muted small mb-3 text-truncate-2" style={{ fontSize: '0.8rem' }}>
+                          {proj.description}
+                        </p>
+                      )}
                     </div>
 
-                    <h5 className="fw-bold mb-1 text-body">{proj.name}</h5>
-                    {proj.builder && (
-                      <p className="text-muted small mb-2">
-                        Developer: <span className="fw-medium text-body">{proj.builder}</span>
-                      </p>
-                    )}
-                    {proj.description && (
-                      <p className="text-muted small mb-3 text-truncate-2">
-                        {proj.description}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="d-flex align-items-center gap-1.5 pt-3 border-top mt-auto">
-                    <button
-                      type="button"
-                      className="btn btn-sm btn-outline-secondary flex-grow-1"
-                      onClick={() => handleOpenEditProject(proj)}
-                    >
-                      <i className="fas fa-pen-to-square me-1"></i> Edit
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-sm btn-outline-danger"
-                      onClick={() => handleDeleteProject(proj)}
-                    >
-                      <i className="fas fa-trash-can"></i>
-                    </button>
+                    <div className="d-flex align-items-center gap-1.5 pt-3 border-top mt-auto">
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-outline-secondary flex-grow-1"
+                        onClick={() => handleOpenEditProject(proj)}
+                      >
+                        <i className="fas fa-pen-to-square me-1"></i> Edit
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-outline-danger"
+                        onClick={() => handleDeleteProject(proj)}
+                        title="Delete Project"
+                      >
+                        <i className="fas fa-trash-can"></i>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
       {/* ======================================================== */}
-      {/* TAB 3: BUILDINGS */}
+      {/* TAB 3: BUILDINGS                                        */}
       {/* ======================================================== */}
       {activeTab === 'buildings' && (
         <div className="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3">
-          {buildings.map((bld) => (
-            <div key={bld.id || bld._id} className="col">
-              <div className="card crm-card border-0 shadow-sm h-100">
-                <div className="card-body p-3.5 d-flex flex-column justify-content-between">
-                  <div>
-                    <div className="d-flex align-items-center justify-content-between mb-2">
-                      <span className="badge bg-info-subtle text-info fw-bold">
-                        {bld.totalFloors ?? 10} Floors
-                      </span>
-                      <small className="text-muted">
-                        {bld.project?.name || 'Project'}
-                      </small>
+          {buildings.map((bld) => {
+            const bldId = bld.id || bld._id;
+            const bldUnits = units.filter(
+              (u) => (u.building?._id || u.building?.id || u.building) === bldId
+            );
+
+            return (
+              <div key={bldId} className="col">
+                <div className="card crm-card border-0 shadow-sm h-100 overflow-hidden">
+                  <div className="card-body p-3.5 d-flex flex-column justify-content-between">
+                    <div>
+                      <div className="d-flex align-items-center justify-content-between mb-2">
+                        <span className="badge bg-info-subtle text-info border border-info-subtle fw-semibold px-2 py-1">
+                          {bld.totalFloors ?? 10} Floors
+                        </span>
+                        <small className="text-muted">
+                          {bld.project?.name || 'Master Project'}
+                        </small>
+                      </div>
+
+                      <h5 className="fw-bold mb-2 text-body d-flex align-items-center">
+                        <i className="fas fa-building text-primary me-2"></i>
+                        <span>{bld.name}</span>
+                      </h5>
+
+                      <div className="p-2 rounded-2 bg-body-tertiary mb-3 small d-flex justify-content-between align-items-center">
+                        <span className="text-muted">Registered Units:</span>
+                        <span className="fw-bold text-primary">{bldUnits.length} Units</span>
+                      </div>
+
+                      {bld.notes && (
+                        <p className="text-muted small mb-3" style={{ fontSize: '0.8rem' }}>
+                          {bld.notes}
+                        </p>
+                      )}
                     </div>
 
-                    <h5 className="fw-bold mb-2 text-body">
-                      <i className="fas fa-building text-primary me-2"></i>
-                      {bld.name}
-                    </h5>
-                    {bld.notes && (
-                      <p className="text-muted small mb-3">
-                        {bld.notes}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="d-flex align-items-center gap-1.5 pt-3 border-top mt-auto">
-                    <button
-                      type="button"
-                      className="btn btn-sm btn-outline-secondary flex-grow-1"
-                      onClick={() => handleOpenEditBuilding(bld)}
-                    >
-                      <i className="fas fa-pen-to-square me-1"></i> Edit
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-sm btn-outline-danger"
-                      onClick={() => handleDeleteBuilding(bld)}
-                    >
-                      <i className="fas fa-trash-can"></i>
-                    </button>
+                    <div className="d-flex align-items-center gap-1.5 pt-3 border-top mt-auto">
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-outline-secondary flex-grow-1"
+                        onClick={() => handleOpenEditBuilding(bld)}
+                      >
+                        <i className="fas fa-pen-to-square me-1"></i> Edit
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-outline-danger"
+                        onClick={() => handleDeleteBuilding(bld)}
+                        title="Delete Building"
+                      >
+                        <i className="fas fa-trash-can"></i>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 

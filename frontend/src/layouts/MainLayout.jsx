@@ -7,6 +7,7 @@ import ProfileDrawer from '../components/common/ProfileDrawer';
 import MobileProfileModal from '../components/common/MobileProfileModal';
 import MobileNavMenuModal from '../components/common/MobileNavMenuModal';
 import MobileQuickActionModal from '../components/common/MobileQuickActionModal';
+import GlobalSearchModal from '../components/common/GlobalSearchModal';
 
 export default function MainLayout() {
   const [isCollapsed, setIsCollapsed] = useState(() => {
@@ -16,6 +17,7 @@ export default function MainLayout() {
   const [isMobileProfileOpen, setIsMobileProfileOpen] = useState(false);
   const [isMobileNavMenuOpen, setIsMobileNavMenuOpen] = useState(false);
   const [isMobileQuickActionOpen, setIsMobileQuickActionOpen] = useState(false);
+  const [isGlobalSearchOpen, setIsGlobalSearchOpen] = useState(false);
 
   const location = useLocation();
 
@@ -26,6 +28,18 @@ export default function MainLayout() {
       return next;
     });
   };
+
+  // Keyboard shortcut listener for Global Search (Cmd+K / Ctrl+K)
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsGlobalSearchOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   // Compute navContext based on current route
   const getNavContext = () => {
@@ -43,6 +57,7 @@ export default function MainLayout() {
     setIsMobileProfileOpen(false);
     setIsMobileNavMenuOpen(false);
     setIsMobileQuickActionOpen(false);
+    setIsGlobalSearchOpen(false);
   }, [location.pathname]);
 
   return (
@@ -54,6 +69,7 @@ export default function MainLayout() {
           navContext={getNavContext()}
           onOpenProfileDrawer={() => setIsProfileDrawerOpen(true)}
           onOpenMobileProfile={() => setIsMobileProfileOpen(true)}
+          onOpenGlobalSearch={() => setIsGlobalSearchOpen(true)}
         />
 
         <main className="crm-content">
@@ -84,6 +100,11 @@ export default function MainLayout() {
       <MobileQuickActionModal
         isOpen={isMobileQuickActionOpen}
         onClose={() => setIsMobileQuickActionOpen(false)}
+      />
+
+      <GlobalSearchModal
+        isOpen={isGlobalSearchOpen}
+        onClose={() => setIsGlobalSearchOpen(false)}
       />
     </div>
   );

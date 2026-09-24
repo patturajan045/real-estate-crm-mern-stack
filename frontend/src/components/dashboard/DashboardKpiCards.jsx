@@ -1,66 +1,143 @@
 import React from 'react';
-import StatCard from '../common/StatCard';
 import { formatCurrency } from '../../utils/formatters';
 
-export default function DashboardKpiCards({ data, onScrollToFollowups, onNavigateLeads, onNavigateProperties, onNavigateBookings }) {
-  const kpi = data?.kpi || {};
+export default function DashboardKpiCards({
+  data,
+  onScrollToFollowups,
+  onNavigateLeads,
+  onNavigateProperties,
+  onNavigateBookings,
+}) {
+  const counts = data?.counts || {};
+  const totalLeads = counts.totalLeads ?? data?.kpi?.totalLeads ?? 0;
+  const todayFollowups = counts.todayFollowupsCount ?? 0;
+  const overdueFollowups = counts.overdueFollowupsCount ?? 0;
+  const totalPendingFollowups = todayFollowups + overdueFollowups;
+  const availableUnits = counts.availableUnits ?? data?.kpi?.availableUnits ?? 0;
+  const totalUnits = counts.totalUnits ?? data?.kpi?.totalUnits ?? 0;
+  const totalRevenue = counts.totalRevenue ?? data?.kpi?.totalRevenue ?? 0;
+  const totalBookings = counts.totalBookings ?? data?.kpi?.activeBookings ?? 0;
 
   return (
-    <div className="row row-cols-1 row-cols-sm-2 row-cols-xl-4 g-3 mb-4">
-      <div className="col">
-        <StatCard
-          title="Total Leads"
-          value={kpi.totalLeads ?? 0}
-          icon="fa-user-tag"
-          colorClass="text-primary"
-          bgClass="bg-primary-subtle"
-          subtitle={`${kpi.activeLeads ?? 0} active in pipeline`}
-          badgeText="Pipeline"
-          badgeType="primary"
+    <div className="row g-2 g-sm-3 mb-3 mb-sm-4 crm-swipe-row">
+      {/* 1. Total Leads Card */}
+      <div className="col-6 col-xl-3">
+        <div
+          className="stat-card h-100"
           onClick={onNavigateLeads}
-        />
+          role="button"
+          tabIndex={0}
+          title="Total registered leads across all pipeline stages"
+          onKeyDown={(e) => e.key === 'Enter' && onNavigateLeads()}
+        >
+          <div className="min-w-0 me-1 me-sm-2 flex-grow-1">
+            <div className="stat-label">
+              <span className="d-none d-sm-inline">Total </span>Leads
+            </div>
+            <h3 className="stat-value text-body" id="kpiTotalLeads">
+              {totalLeads}
+            </h3>
+            <div className="d-flex align-items-center gap-1 mt-1">
+              <span className="stat-trend up">
+                <i className="fas fa-arrow-up me-1"></i>
+                <span className="d-none d-sm-inline">Active Pipeline</span>
+                <span className="d-sm-none">Pipeline</span>
+              </span>
+            </div>
+          </div>
+          <div className="stat-icon primary">
+            <i className="fas fa-users"></i>
+          </div>
+        </div>
       </div>
 
-      <div className="col">
-        <StatCard
-          title="Available Units"
-          value={kpi.availableUnits ?? 0}
-          icon="fa-door-open"
-          colorClass="text-success"
-          bgClass="bg-success-subtle"
-          subtitle={`Out of ${kpi.totalUnits ?? 0} total units`}
-          badgeText="Inventory"
-          badgeType="success"
-          onClick={onNavigateProperties}
-        />
-      </div>
-
-      <div className="col">
-        <StatCard
-          title="Active Bookings"
-          value={kpi.activeBookings ?? 0}
-          icon="fa-file-signature"
-          colorClass="text-info"
-          bgClass="bg-info-subtle"
-          subtitle={formatCurrency(kpi.totalRevenue || 0)}
-          badgeText="Agreements"
-          badgeType="info"
-          onClick={onNavigateBookings}
-        />
-      </div>
-
-      <div className="col">
-        <StatCard
-          title="Pending Follow-ups"
-          value={kpi.pendingFollowUps ?? 0}
-          icon="fa-calendar-exclamation"
-          colorClass={kpi.pendingFollowUps > 0 ? 'text-warning' : 'text-muted'}
-          bgClass="bg-warning-subtle"
-          subtitle="Requires staff attention"
-          badgeText={kpi.pendingFollowUps > 0 ? 'Action Due' : 'All Clear'}
-          badgeType={kpi.pendingFollowUps > 0 ? 'warning' : 'secondary'}
+      {/* 2. Urgent Follow-ups Card */}
+      <div className="col-6 col-xl-3">
+        <div
+          className="stat-card h-100"
           onClick={onScrollToFollowups}
-        />
+          role="button"
+          tabIndex={0}
+          title="Calls and meetings scheduled for today or overdue"
+          onKeyDown={(e) => e.key === 'Enter' && onScrollToFollowups()}
+        >
+          <div className="min-w-0 me-1 me-sm-2 flex-grow-1">
+            <div className="stat-label">
+              <span className="d-none d-sm-inline">Urgent </span>Follow-ups
+            </div>
+            <h3 className="stat-value text-warning" id="kpiFollowupsCount">
+              {totalPendingFollowups}
+            </h3>
+            <div className="d-flex align-items-center gap-1 mt-1">
+              <span className="text-muted small text-truncate" style={{ fontSize: '0.72rem' }}>
+                <span className="d-none d-sm-inline">{todayFollowups} today, {overdueFollowups} overdue</span>
+                <span className="d-sm-none">{todayFollowups} today · {overdueFollowups} due</span>
+              </span>
+            </div>
+          </div>
+          <div className="stat-icon warning">
+            <i className="fas fa-clock"></i>
+          </div>
+        </div>
+      </div>
+
+      {/* 3. Available Inventory Card */}
+      <div className="col-6 col-xl-3">
+        <div
+          className="stat-card h-100"
+          onClick={onNavigateProperties}
+          role="button"
+          tabIndex={0}
+          title="Units currently open for buyer booking"
+          onKeyDown={(e) => e.key === 'Enter' && onNavigateProperties()}
+        >
+          <div className="min-w-0 me-1 me-sm-2 flex-grow-1">
+            <div className="stat-label">
+              Available<span className="d-none d-sm-inline"> Units</span>
+            </div>
+            <h3 className="stat-value text-success" id="kpiAvailableUnits">
+              {availableUnits}
+            </h3>
+            <div className="d-flex align-items-center gap-1 mt-1">
+              <span className="text-muted small text-truncate" style={{ fontSize: '0.72rem' }}>
+                <span className="d-none d-sm-inline">out of {totalUnits} total units</span>
+                <span className="d-sm-none">of {totalUnits} units</span>
+              </span>
+            </div>
+          </div>
+          <div className="stat-icon success">
+            <i className="fas fa-door-open"></i>
+          </div>
+        </div>
+      </div>
+
+      {/* 4. Confirmed Revenue Card */}
+      <div className="col-6 col-xl-3">
+        <div
+          className="stat-card h-100"
+          onClick={onNavigateBookings}
+          role="button"
+          tabIndex={0}
+          title="Total agreement value of confirmed bookings"
+          onKeyDown={(e) => e.key === 'Enter' && onNavigateBookings()}
+        >
+          <div className="min-w-0 me-1 me-sm-2 flex-grow-1">
+            <div className="stat-label">
+              <span className="d-none d-sm-inline">Confirmed </span>Revenue
+            </div>
+            <h3 className="stat-value text-info" id="kpiTotalRevenue">
+              {formatCurrency(totalRevenue)}
+            </h3>
+            <div className="d-flex align-items-center gap-1 mt-1">
+              <span className="text-muted small text-truncate" style={{ fontSize: '0.72rem' }}>
+                {totalBookings} Bookings
+              </span>
+            </div>
+          </div>
+          <div className="stat-icon info">
+            <i className="fas fa-hand-holding-usd"></i>
+          </div>
+        </div>
       </div>
     </div>
   );
